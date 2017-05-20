@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Boot Thymeleaf + Spring Security</title>
+
+    <div th:replace="fragments/header :: header-css"/>
+
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+
+    <!--<form th:action="@{/login}" method="get">-->
+    <!--<button class="btn btn-md btn-warning btn-block" type="Submit">Go To Login Page</button>-->
+    <!--</form>-->
+
+    <div class="container">
+
+        <!--<span th:utext="${successMessage}"></span>-->
+
+        <!--Show this info message only if posted successfully-->
+        <div class="alert alert-info" th:if="${successMessage}" th:utext="${successMessage}"></div>
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <form autocomplete="off" action="#" th:action="@{/newPost}"
+                      th:object="${post}" method="post" class="form-horizontal"
+                      role="form">
+                    <h2>Write new post</h2>
+
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            <label th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
+                                   class="alert alert-danger"></label>
+                            <input type="text" th:field="*{title}" placeholder="Title"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            <label th:if="${#fields.hasErrors('body')}" th:errors="*{body}"
+                                   class="alert alert-danger"></label>
+                            <textarea th:field="*{body}"
+                                      placeholder="Body" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <input type="hidden" th:field="*{user}"/>
+
+                    <!--<div class="form-group">-->
+                    <!--<div class="col-sm-9">-->
+                    <!--<label th:if="${#fields.hasErrors('email')}" th:errors="*{email}"-->
+                    <!--class="validation-message"></label>-->
+                    <!--<input type="text" th:field="*{email}" placeholder="Email"-->
+                    <!--class="form-control"/>-->
+                    <!--</div>-->
+
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                    <!--<div class="col-sm-9">-->
+                    <!--<label th:if="${#fields.hasErrors('password')}" th:errors="*{password}"-->
+                    <!--class="validation-message"></label>-->
+                    <!--<input type="password" th:field="*{password}"-->
+                    <!--placeholder="Password" class="form-control"/>-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="form-group">-->
+                    <!--<div class="col-sm-9">-->
+                    <!--<label th:if="${#fields.hasErrors('username')}" th:errors="*{username}"-->
+                    <!--class="validation-message"></label>-->
+                    <!--<input type="text" th:field="*{username}"-->
+                    <!--placeholder="Username" class="form-control"/>-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            <button type="submit" class="btn btn-primary btn-block">Save</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>
