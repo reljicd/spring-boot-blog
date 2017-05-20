@@ -5,11 +5,16 @@
 <div th:fragment="posts">
 
     <div class="starter-template panel" th:each="post : ${posts}">
-        <h1><a th:text="${post.title}" th:href="@{'/post/' + ${post.id}}">Title</a></h1>
-        <!--<div th:text="'Created: ' + ${post.createDate} + ' by ' + ${post.user.username}">Created by User</div>-->
-        <div th:text="'Created: ' + ${#dates.format(post.createDate, 'dd-MMM-yyyy')} + ' by '">Created by</div>
-        <div><a th:text="${post.user.username}" th:href="@{'/blog/' + ${post.user.username}}">User</a></div>
-        <h3 th:text="${post.body}">Body</h3>
+        <div class="panel-heading">
+            <h1><a th:text="${post.title}" th:href="@{'/post/' + ${post.id}}">Title</a></h1>
+            <!--<div th:text="'Created: ' + ${post.createDate} + ' by ' + ${post.user.username}">Created by User</div>-->
+            <div th:text="'Created: ' + ${#dates.format(post.createDate, 'dd-MMM-yyyy')} + ' by '">
+                Created by
+            </div>
+            <div><a th:text="${post.user.username}" th:href="@{'/blog/' + ${post.user.username}}">User</a>
+            </div>
+        </div>
+        <h3 class="panel-body" th:text="${post.body}">Body</h3>
         <br></br>
     </div>
 
