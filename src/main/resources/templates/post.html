@@ -9,6 +9,8 @@
 <div th:replace="fragments/header :: header"/>
 
 <div class="container">
+
+    <!--Post-->
     <div class="jumbotron">
 
         <h1 th:text="${post.title}">Title</h1>
@@ -20,16 +22,38 @@
         <!--Only show these buttons if the user is the owner of post-->
         <div sec:authorize="isAuthenticated()" th:if="${username}">
             <div class="row">
-                <a th:href="@{'/editPost/{id}'(id=${post.id})}" class="col-md-1">
-                    <button type="button" class="btn btn-primary" th:text="Edit">Edit</button>
+                <a th:href="@{'/editPost/{id}'(id=${post.id})}" class="col-md-2">
+                    <button type="button" class="btn btn-primary btn-block" th:text="Edit">Edit</button>
                 </a>
 
-                <form action="#" th:action="@{'/post/{id}'(id=${post.id})}" th:method="delete"
-                      class="col-md-1">
-                    <input type="hidden" name="_method" value="delete"/>
-                    <button type="submit" class="btn btn-danger" th:text="Delete">Delete</button>
-                </form>
+                <!--<form action="#" th:action="@{'/post/{id}'(id=${post.id})}" th:method="delete"-->
+                <!--class="col-md-1">-->
+                <!--<input type="hidden" name="_method" value="delete"/>-->
+                <!--<button type="submit" class="btn btn-danger" th:text="Delete">Delete</button>-->
+                <!--</form>-->
             </div>
+        </div>
+    </div>
+
+    <h2>Comments:</h2>
+
+    <!--Comments-->
+    <div class="well" th:each="comment : ${post.comments}">
+        <h3 th:text="${comment.body}">Body</h3>
+        <div th:text="'Created: ' + ${#dates.format(comment.createDate, 'dd-MMM-yyyy')} + ' by '">
+            Created by
+        </div>
+        <div><a th:text="${comment.user.username}" th:href="@{'/blog/' + ${comment.user.username}}">User</a>
+        </div>
+    </div>
+
+    <!--Leave a comment button-->
+    <!--Only if authenticated-->
+    <div sec:authorize="isAuthenticated()">
+        <div class="row">
+            <a th:href="@{'/commentPost/{id}'(id=${post.id})}" class="col-md-2">
+                <button type="button" class="btn btn-primary btn-block" th:text="Comment">Comment</button>
+            </a>
         </div>
     </div>
 </div>

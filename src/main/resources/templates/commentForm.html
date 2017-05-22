@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Boot Thymeleaf + Spring Security</title>
+
+    <div th:replace="fragments/header :: header-css"/>
+
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+
+    <!--<form th:action="@{/login}" method="get">-->
+    <!--<button class="btn btn-md btn-warning btn-block" type="Submit">Go To Login Page</button>-->
+    <!--</form>-->
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <form autocomplete="off" action="#" th:action="@{/createComment}"
+                      th:object="${comment}" method="post" class="form-horizontal"
+                      role="form">
+                    <h2>Write new comment</h2>
+
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            <label th:if="${#fields.hasErrors('body')}" th:errors="*{body}"
+                                   class="alert alert-danger"></label>
+                            <textarea th:field="*{body}"
+                                      placeholder="Body" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <input type="hidden" th:field="*{post}"/>
+                    <input type="hidden" th:field="*{user}"/>
+
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            <button type="submit" class="btn btn-primary btn-block">Comment</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

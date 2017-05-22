@@ -1,49 +1,37 @@
 package com.reljicd.model;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
 import java.util.Date;
 
 /**
  * Created by Dusan on 19-May-17.
  */
 @Entity
-@Table(name = "post")
-public class Post {
+@Table(name = "comment")
+public class Comment {
 
     private Long id;
-    @Length(min = 5, message = "*Your title must have at least 5 characters")
-    @NotEmpty(message = "*Please provide title")
-    private String title;
+    @NotEmpty(message = "*Please write something")
     private String body;
     private Date createDate;
     @NotNull
+    private Post post;
+    @NotNull
     private User user;
-    private Collection<Comment> comments;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "post_id")
+    @Column(name = "comment_id")
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @Column(name = "title", nullable = false)
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     @Column(name = "body", columnDefinition = "TEXT")
@@ -67,6 +55,16 @@ public class Post {
     }
 
     @ManyToOne
+    @JoinColumn(name = "post_id", referencedColumnName = "post_id", nullable = false)
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     public User getUser() {
         return user;
@@ -74,14 +72,5 @@ public class Post {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-    public Collection<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(Collection<Comment> comments) {
-        this.comments = comments;
     }
 }

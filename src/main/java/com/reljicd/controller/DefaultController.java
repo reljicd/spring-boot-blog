@@ -34,6 +34,7 @@ public class DefaultController {
     public String error403() {
         return "/403";
     }
+
     @GetMapping(value = "/homeAlt")
     public ModelAndView homeAlt() {
         ModelAndView modelAndView = new ModelAndView();
