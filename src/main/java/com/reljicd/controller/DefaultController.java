@@ -42,7 +42,7 @@ public class DefaultController {
         User user = userService.findByEmail(auth.getName());
         modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
         modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
-        modelAndView.setViewName("homeAlt");
+        modelAndView.setViewName("/homeAlt");
         return modelAndView;
     }
 }

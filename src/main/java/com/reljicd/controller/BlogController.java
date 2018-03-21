@@ -49,7 +49,7 @@ public class BlogController {
         ModelAndView modelAndView = new ModelAndView();
         User user = userService.findByUsername(username);
         if (user == null) {
-            modelAndView.setViewName("404");
+            modelAndView.setViewName("/404");
         } else {
             Page<Post> posts = postService.findByUserOrderedByDatePageable(user, new PageRequest(evalPage, evalPageSize));
             Pager pager = new Pager(posts.getTotalPages(), posts.getNumber(), BUTTONS_TO_SHOW);
@@ -60,7 +60,7 @@ public class BlogController {
             modelAndView.addObject("pageSizes", PAGE_SIZES);
             modelAndView.addObject("pager", pager);
             modelAndView.addObject("user", user);
-            modelAndView.setViewName("posts");
+            modelAndView.setViewName("/posts");
         }
         return modelAndView;
     }

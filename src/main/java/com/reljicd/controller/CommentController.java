@@ -40,7 +40,7 @@ public class CommentController {
     public ModelAndView createNewPost(@Valid Comment comment, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("commentForm");
+            modelAndView.setViewName("/commentForm");
         } else {
             commentService.saveComment(comment);
             modelAndView.setViewName("redirect:/post/" + comment.getPost().getId());
@@ -61,12 +61,12 @@ public class CommentController {
         Post post = postService.findPostForId(id);
         Comment comment = new Comment();
         if (post == null) {
-            modelAndView.setViewName("404");
+            modelAndView.setViewName("/404");
         } else {
             comment.setUser(userService.findByUsername(principal.getName()));
             comment.setPost(post);
             modelAndView.addObject("comment", comment);
-            modelAndView.setViewName("commentForm");
+            modelAndView.setViewName("/commentForm");
         }
         return modelAndView;
     }

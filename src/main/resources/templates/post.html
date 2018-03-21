@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-    <div th:replace="fragments/header :: header-css"/>
+    <div th:replace="/fragments/header :: header-css"/>
 </head>
 <body>
 
-<div th:replace="fragments/header :: header"/>
+<div th:replace="/fragments/header :: header"/>
 
 <div class="container">
 
@@ -59,7 +59,7 @@
 </div>
 <!-- /.container -->
 
-<div th:replace="fragments/footer :: footer"/>
+<div th:replace="/fragments/footer :: footer"/>
 
 </body>
 </html>

@@ -3,12 +3,12 @@
 <head>
 	<title>Spring Boot Thymeleaf + Spring Security</title>
 
-	<div th:replace="fragments/header :: header-css"/>
+	<div th:replace="/fragments/header :: header-css"/>
 
 </head>
 <body>
 
-<div th:replace="fragments/header :: header"/>
+<div th:replace="/fragments/header :: header"/>
 
 <div class="container">
 
@@ -32,7 +32,7 @@
 </div>
 <!-- /.container -->
 
-<div th:replace="fragments/footer :: footer"/>
+<div th:replace="/fragments/footer :: footer"/>
 
 </body>
 </html>

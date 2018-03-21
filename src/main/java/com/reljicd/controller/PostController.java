@@ -33,7 +33,7 @@ public class PostController {
         Post post = new Post();
         post.setUser(user);
         modelAndView.addObject("post", post);
-        modelAndView.setViewName("postForm");
+        modelAndView.setViewName("/postForm");
         return modelAndView;
     }
 
@@ -41,7 +41,7 @@ public class PostController {
     public ModelAndView createNewPost(@Valid Post post, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("postForm");
+            modelAndView.setViewName("/postForm");
         } else {
             postService.savePost(post);
             modelAndView.setViewName("redirect:/blog/" + post.getUser().getUsername());
@@ -64,13 +64,13 @@ public class PostController {
         Post post = postService.findPostForId(id);
         // Not possible to edit if user is not logged in, or if he is now the owner of the post
         if (principal == null || !principal.getName().equals(post.getUser().getUsername())) {
-            modelAndView.setViewName("403");
+            modelAndView.setViewName("/403");
         }
         if (post == null) {
-            modelAndView.setViewName("404");
+            modelAndView.setViewName("/404");
         } else {
             modelAndView.addObject("post", post);
-            modelAndView.setViewName("postForm");
+            modelAndView.setViewName("/postForm");
         }
         return modelAndView;
     }
@@ -84,10 +84,10 @@ public class PostController {
             modelAndView.addObject("username", principal.getName());
         }
         if (post == null) {
-            modelAndView.setViewName("404");
+            modelAndView.setViewName("/404");
         } else {
             modelAndView.addObject("post", post);
-            modelAndView.setViewName("post");
+            modelAndView.setViewName("/post");
         }
         return modelAndView;
     }
@@ -97,11 +97,11 @@ public class PostController {
         ModelAndView modelAndView = new ModelAndView();
         Post post = postService.findPostForId(id);
         if (post == null) {
-            modelAndView.setViewName("error");
+            modelAndView.setViewName("/error");
         }
         // Not possible to delete if user is not logged in, or if he is now the owner of the post
         else if (principal == null || !principal.getName().equals(post.getUser().getUsername())) {
-            modelAndView.setViewName("403");
+            modelAndView.setViewName("/403");
         } else {
             postService.delete(post);
             modelAndView.setViewName("redirect:/home");
