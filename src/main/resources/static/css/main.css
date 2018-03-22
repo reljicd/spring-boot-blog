@@ -15,3 +15,8 @@ footer {
     font-size: 10px;
     color: #FF1C19;
 }
+
+.pagination {
+    display: block;
+    text-align: center;
+}

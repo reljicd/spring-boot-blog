@@ -23,10 +23,7 @@ import java.util.Optional;
 @Controller
 public class BlogController {
 
-    private static final int BUTTONS_TO_SHOW = 5;
     private static final int INITIAL_PAGE = 0;
-    private static final int INITIAL_PAGE_SIZE = 5;
-    private static final int[] PAGE_SIZES = {5, 10, 20};
 
     @Autowired
     private UserService userService;
@@ -36,11 +33,8 @@ public class BlogController {
 
     @RequestMapping(value = "/blog/{username}", method = RequestMethod.GET)
     public ModelAndView blogForUsername(@PathVariable String username,
-                                        @RequestParam("pageSize") Optional<Integer> pageSize,
                                         @RequestParam("page") Optional<Integer> page) {
-        // Evaluate page size. If requested parameter is null, return initial
-        // page size
-        int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
+
         // Evaluate page. If requested parameter is null or less than 0 (to
         // prevent exception), return initial size. Otherwise, return value of
         // param. decreased by 1.
@@ -51,13 +45,10 @@ public class BlogController {
         if (user == null) {
             modelAndView.setViewName("/404");
         } else {
-            Page<Post> posts = postService.findByUserOrderedByDatePageable(user, new PageRequest(evalPage, evalPageSize));
-            Pager pager = new Pager(posts.getTotalPages(), posts.getNumber(), BUTTONS_TO_SHOW);
+            Page<Post> posts = postService.findByUserOrderedByDatePageable(user, new PageRequest(evalPage, 5));
+            Pager pager = new Pager(posts);
 
-//            modelAndView.addObject("posts", postService.findNLatestPostsForUser(10, user));
             modelAndView.addObject("posts", posts);
-            modelAndView.addObject("selectedPageSize", evalPageSize);
-            modelAndView.addObject("pageSizes", PAGE_SIZES);
             modelAndView.addObject("pager", pager);
             modelAndView.addObject("user", user);
             modelAndView.setViewName("/posts");

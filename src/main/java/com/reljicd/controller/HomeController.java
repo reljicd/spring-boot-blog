@@ -19,35 +19,24 @@ import java.util.Optional;
 @Controller
 public class HomeController {
 
-    private static final int BUTTONS_TO_SHOW = 5;
     private static final int INITIAL_PAGE = 0;
-    private static final int INITIAL_PAGE_SIZE = 5;
-    private static final int[] PAGE_SIZES = {5, 10, 20};
 
     @Autowired
     private PostService postService;
 
-    @GetMapping("/home")
-    public ModelAndView home(@RequestParam("pageSize") Optional<Integer> pageSize,
-                             @RequestParam("page") Optional<Integer> page) {
+    @GetMapping(value={"/", "/home"})
+    public ModelAndView home(@RequestParam("page") Optional<Integer> page) {
 
-        // Evaluate page size. If requested parameter is null, return initial
-        // page size
-        int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
         // Evaluate page. If requested parameter is null or less than 0 (to
         // prevent exception), return initial size. Otherwise, return value of
-        // param. decreased by 1.
-        int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
+        // param decreased by 1.
+        int pageNumber = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
-//        Page<Post> posts = postService.findAllPageable(new PageRequest(evalPage, evalPageSize));
-        Page<Post> posts = postService.findAllOrderedByDatePageable(new PageRequest(evalPage, evalPageSize));
-        Pager pager = new Pager(posts.getTotalPages(), posts.getNumber(), BUTTONS_TO_SHOW);
+        Page<Post> posts = postService.findAllOrderedByDatePageable(new PageRequest(pageNumber, 5));
+        Pager pager = new Pager(posts);
 
         ModelAndView modelAndView = new ModelAndView();
-//        Collection<Post> posts = postService.findNLatestPosts(5);
         modelAndView.addObject("posts", posts);
-        modelAndView.addObject("selectedPageSize", evalPageSize);
-        modelAndView.addObject("pageSizes", PAGE_SIZES);
         modelAndView.addObject("pager", pager);
         modelAndView.setViewName("/home");
         return modelAndView;
