@@ -61,8 +61,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/home", "/about", "/registration", "/error", "/blog/**", "/post/**", "/h2-console/**").permitAll()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
                 .antMatchers("/user/**", "/newPost/**").hasAnyRole("USER")
-                // permit all to see HAL Browser
-//                .antMatchers("/browser/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -98,8 +96,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // In memory authentication
         auth.inMemoryAuthentication()
-//                .withUser("user").password("password").roles("USER")
-//                .and()
                 .withUser(adminUsername).password(adminPassword).roles("ADMIN");
     }
 

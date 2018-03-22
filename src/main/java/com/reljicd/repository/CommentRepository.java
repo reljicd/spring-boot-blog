@@ -1,7 +1,6 @@
 package com.reljicd.repository;
 
 import com.reljicd.model.Comment;
-import com.reljicd.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

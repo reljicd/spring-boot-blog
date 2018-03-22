@@ -12,13 +12,7 @@
 
 <div class="container">
 
-    <!--<form th:action="@{/login}" method="get">-->
-    <!--<button class="btn btn-md btn-warning btn-block" type="Submit">Go To Login Page</button>-->
-    <!--</form>-->
-
     <div class="container">
-
-        <!--<span th:utext="${successMessage}"></span>-->
 
         <!--Show this info message only if posted successfully-->
         <div class="alert alert-info" th:if="${successMessage}" th:utext="${successMessage}"></div>
@@ -49,7 +43,7 @@
                     <input type="hidden" th:field="*{id}"/>
 
                     <div class="form-group">
-                            <input type="submit" class="btn btn-primary btn-block" value="Save"/>
+                        <input type="submit" class="btn btn-primary btn-block" value="Save"/>
                     </div>
 
                 </form>
@@ -63,8 +57,8 @@
                 <form action="#" th:action="@{'/post/{id}'(id=${post.id})}" th:method="delete"
                       class="form-horizontal">
                     <div class="form-group">
-                            <input type="hidden" name="_method" value="delete"/>
-                            <button type="submit" class="btn btn-danger btn-block" th:text="Delete">Delete</button>
+                        <input type="hidden" name="_method" value="delete"/>
+                        <button type="submit" class="btn btn-danger btn-block" th:text="Delete">Delete</button>
                     </div>
                 </form>
             </div>

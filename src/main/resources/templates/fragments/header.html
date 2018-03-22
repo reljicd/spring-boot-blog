@@ -2,9 +2,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <div th:fragment="header-css">
-        <!--&lt;!&ndash; this is header-css &ndash;&gt;-->
-        <!--<link rel="stylesheet" type="text/css"-->
-        <!--href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />-->
+
         <title>Spring Boot Blog</title>
 
         <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
@@ -27,9 +25,6 @@
                 <a class="navbar-brand" th:href="@{/home}">Blog App</a>
             </div>
             <div id="navbar" class="collapse navbar-collapse navbar-right">
-                <!--<ul class="nav navbar-nav">-->
-                <!--<li class="active"><a th:href="@{/home}">Home</a></li>-->
-                <!--</ul>-->
                 <!-- show registration only if user is not yet authenticated -->
                 <ul class="nav navbar-nav" sec:authorize="!isAuthenticated()">
                     <li class="active"><a th:href="@{/registration}">Registration</a></li>
