@@ -15,7 +15,9 @@ Every authenticated user can comment on posts made by other users.
 Home page is paginated list of all posts.
 Non-authenticated users can see all blog posts, but cannot add new posts or comment.
 
-![Screenshot 1]()
+![Screenshot 1](https://user-images.githubusercontent.com/7095876/37773737-ae6a8b56-2dde-11e8-8a7f-5f259695bdc9.png)
+
+![Screenshot 1](https://user-images.githubusercontent.com/7095876/37773767-bbcb292c-2dde-11e8-91f8-2a05fe84e05e.png)
 
 ## Configuration
 
