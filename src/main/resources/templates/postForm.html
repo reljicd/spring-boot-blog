@@ -24,38 +24,32 @@
         <div class="alert alert-info" th:if="${successMessage}" th:utext="${successMessage}"></div>
 
         <!--New Post Form-->
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3">
+        <div class="row" style="margin-top:20px">
+            <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
                 <form autocomplete="off" action="#" th:action="@{/newPost}"
                       th:object="${post}" method="post" class="form-horizontal"
                       role="form">
-                    <h2>Write new post</h2>
+                    <h2 class="text-center">Write new post</h2>
 
                     <div class="form-group">
-                        <div class="col-sm-9">
-                            <label th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
-                                   class="alert alert-danger"></label>
-                            <input type="text" th:field="*{title}" placeholder="Title"
-                                   class="form-control"/>
-                        </div>
+                        <label th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
+                               class="alert alert-danger"></label>
+                        <input type="text" th:field="*{title}" placeholder="Title"
+                               class="form-control"/>
                     </div>
 
                     <div class="form-group">
-                        <div class="col-sm-9">
-                            <label th:if="${#fields.hasErrors('body')}" th:errors="*{body}"
-                                   class="alert alert-danger"></label>
-                            <textarea th:field="*{body}"
-                                      placeholder="Body" class="form-control"/>
-                        </div>
+                        <label th:if="${#fields.hasErrors('body')}" th:errors="*{body}"
+                               class="alert alert-danger"></label>
+                        <textarea th:field="*{body}"
+                                  placeholder="Body" class="form-control"/>
                     </div>
 
                     <input type="hidden" th:field="*{user}"/>
                     <input type="hidden" th:field="*{id}"/>
 
                     <div class="form-group">
-                        <div class="col-sm-9">
-                            <button type="submit" class="btn btn-primary btn-block">Save</button>
-                        </div>
+                            <input type="submit" class="btn btn-primary btn-block" value="Save"/>
                     </div>
 
                 </form>
@@ -69,10 +63,8 @@
                 <form action="#" th:action="@{'/post/{id}'(id=${post.id})}" th:method="delete"
                       class="form-horizontal">
                     <div class="form-group">
-                        <div class="col-sm-9">
                             <input type="hidden" name="_method" value="delete"/>
                             <button type="submit" class="btn btn-danger btn-block" th:text="Delete">Delete</button>
-                        </div>
                     </div>
                 </form>
             </div>
