@@ -12,8 +12,12 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class DefaultController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public DefaultController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/admin")
     public String admin() {

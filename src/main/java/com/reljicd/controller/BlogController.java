@@ -25,11 +25,15 @@ public class BlogController {
 
     private static final int INITIAL_PAGE = 0;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final PostService postService;
 
     @Autowired
-    private PostService postService;
+    public BlogController(UserService userService, PostService postService) {
+        this.userService = userService;
+        this.postService = postService;
+    }
 
     @RequestMapping(value = "/blog/{username}", method = RequestMethod.GET)
     public ModelAndView blogForUsername(@PathVariable String username,

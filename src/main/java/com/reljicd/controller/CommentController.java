@@ -22,12 +22,16 @@ import java.security.Principal;
 @Controller
 public class CommentController {
 
+    private final PostService postService;
+    private final UserService userService;
+    private final CommentService commentService;
+
     @Autowired
-    private PostService postService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private CommentService commentService;
+    public CommentController(PostService postService, UserService userService, CommentService commentService) {
+        this.postService = postService;
+        this.userService = userService;
+        this.commentService = commentService;
+    }
 
     /**
      * Save comment with body from form

@@ -18,8 +18,12 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImp implements PostService {
 
+    private final PostRepository postRepository;
+
     @Autowired
-    private PostRepository postRepository;
+    public PostServiceImp(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
     @Override
     public Collection<Post> findNLatestPosts(int n) {

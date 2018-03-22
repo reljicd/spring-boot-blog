@@ -21,8 +21,12 @@ public class HomeController {
 
     private static final int INITIAL_PAGE = 0;
 
+    private final PostService postService;
+
     @Autowired
-    private PostService postService;
+    public HomeController(PostService postService) {
+        this.postService = postService;
+    }
 
     @GetMapping(value={"/", "/home"})
     public ModelAndView home(@RequestParam("page") Optional<Integer> page) {

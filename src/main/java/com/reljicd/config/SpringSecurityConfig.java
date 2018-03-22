@@ -24,11 +24,9 @@ import javax.sql.DataSource;
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AccessDeniedHandler accessDeniedHandler;
+    private final AccessDeniedHandler accessDeniedHandler;
 
-    @Autowired
-    DataSource dataSource;
+    final DataSource dataSource;
 
     @Value("${spring.admin.username}")
     private String adminUsername;
@@ -41,6 +39,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${spring.queries.roles-query}")
     private String rolesQuery;
+
+    @Autowired
+    public SpringSecurityConfig(AccessDeniedHandler accessDeniedHandler, DataSource dataSource) {
+        this.accessDeniedHandler = accessDeniedHandler;
+        this.dataSource = dataSource;
+    }
 
     /**
      * HTTPSecurity configurer

@@ -21,10 +21,14 @@ import java.security.Principal;
 @Controller
 public class PostController {
 
+    private final PostService postService;
+    private final UserService userService;
+
     @Autowired
-    private PostService postService;
-    @Autowired
-    private UserService userService;
+    public PostController(PostService postService, UserService userService) {
+        this.postService = postService;
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/newPost", method = RequestMethod.GET)
     public ModelAndView newPost(Principal principal) {
