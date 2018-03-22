@@ -14,29 +14,25 @@
 
     <div class="container">
 
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3">
+        <div class="row" style="margin-top:20px">
+            <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
                 <form autocomplete="off" action="#" th:action="@{/createComment}"
-                      th:object="${comment}" method="post" class="form-horizontal"
-                      role="form">
-                    <h2>Write new comment</h2>
+                      th:object="${comment}" method="post" role="form">
+
+                    <h2 class="text-center">Write new comment</h2>
 
                     <div class="form-group">
-                        <div class="col-sm-9">
-                            <label th:if="${#fields.hasErrors('body')}" th:errors="*{body}"
-                                   class="alert alert-danger"></label>
-                            <textarea th:field="*{body}"
-                                      placeholder="Body" class="form-control"/>
-                        </div>
+                        <label th:if="${#fields.hasErrors('body')}" th:errors="*{body}"
+                               class="alert alert-danger"></label>
+                        <textarea th:field="*{body}"
+                                  placeholder="Body" class="form-control input-lg"/>
                     </div>
 
                     <input type="hidden" th:field="*{post}"/>
                     <input type="hidden" th:field="*{user}"/>
 
                     <div class="form-group">
-                        <div class="col-sm-9">
-                            <button type="submit" class="btn btn-primary btn-block">Comment</button>
-                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Comment</button>
                     </div>
 
                 </form>

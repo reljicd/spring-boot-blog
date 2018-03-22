@@ -23,20 +23,21 @@
                 <form autocomplete="off" action="#" th:action="@{/newPost}"
                       th:object="${post}" method="post" class="form-horizontal"
                       role="form">
+
                     <h2 class="text-center">Write new post</h2>
 
                     <div class="form-group">
                         <label th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
                                class="alert alert-danger"></label>
                         <input type="text" th:field="*{title}" placeholder="Title"
-                               class="form-control"/>
+                               class="form-control input-lg"/>
                     </div>
 
                     <div class="form-group">
                         <label th:if="${#fields.hasErrors('body')}" th:errors="*{body}"
                                class="alert alert-danger"></label>
-                        <textarea th:field="*{body}"
-                                  placeholder="Body" class="form-control"/>
+                        <textarea th:field="*{body}" placeholder="Body"
+                                  class="form-control input-lg"/>
                     </div>
 
                     <input type="hidden" th:field="*{user}"/>
