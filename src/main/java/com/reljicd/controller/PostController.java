@@ -14,10 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Optional;
 
-/**
- * Created by Dusan on 19-May-17.
- */
 @Controller
 public class PostController {
 
@@ -33,11 +31,15 @@ public class PostController {
     @RequestMapping(value = "/newPost", method = RequestMethod.GET)
     public ModelAndView newPost(Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
-        User user = userService.findByUsername(principal.getName());
-        Post post = new Post();
-        post.setUser(user);
-        modelAndView.addObject("post", post);
-        modelAndView.setViewName("/postForm");
+        Optional<User> user = userService.findByUsername(principal.getName());
+        if (user.isPresent()) {
+            Post post = new Post();
+            post.setUser(user.get());
+            modelAndView.addObject("post", post);
+            modelAndView.setViewName("/postForm");
+        } else {
+            modelAndView.setViewName("/error");
+        }
         return modelAndView;
     }
 
@@ -57,24 +59,22 @@ public class PostController {
      * Edit post with provided id.
      * It is not possible to edit if the user is not authenticated
      * and if he is now the owner of the post
-     *
-     * @param id
-     * @param principal
-     * @return post model and postForm view, for editing post
      */
     @RequestMapping(value = "/editPost/{id}", method = RequestMethod.GET)
     public ModelAndView editPostWithId(@PathVariable Long id, Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
-        Post post = postService.findPostForId(id);
-        // Not possible to edit if user is not logged in, or if he is now the owner of the post
-        if (principal == null || !principal.getName().equals(post.getUser().getUsername())) {
-            modelAndView.setViewName("/403");
-        }
-        if (post == null) {
-            modelAndView.setViewName("/404");
+
+        Optional<Post> post = postService.findPostForId(id);
+        if (post.isPresent()) {
+            // Not possible to edit if user is not logged in, or if he is now the owner of the post
+            if (principal == null || !principal.getName().equals(post.get().getUser().getUsername())) {
+                modelAndView.setViewName("/403");
+            } else {
+                modelAndView.addObject("post", post.get());
+                modelAndView.setViewName("/postForm");
+            }
         } else {
-            modelAndView.addObject("post", post);
-            modelAndView.setViewName("/postForm");
+            modelAndView.setViewName("/error");
         }
         return modelAndView;
     }
@@ -82,16 +82,18 @@ public class PostController {
     @RequestMapping(value = "/post/{id}", method = RequestMethod.GET)
     public ModelAndView getPostWithId(@PathVariable Long id, Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
-        Post post = postService.findPostForId(id);
-        // Add username info to modelAndView only if the visitor of page is the owner of post
-        if (principal != null && principal.getName().equals(post.getUser().getUsername())) {
-            modelAndView.addObject("username", principal.getName());
-        }
-        if (post == null) {
-            modelAndView.setViewName("/404");
-        } else {
-            modelAndView.addObject("post", post);
+
+        Optional<Post> post = postService.findPostForId(id);
+        if (post.isPresent()) {
+            // Add username info to modelAndView only if the visitor of page is the owner of post
+            if (principal != null && principal.getName().equals(post.get().getUser().getUsername())) {
+                modelAndView.addObject("username", principal.getName());
+            }
+            modelAndView.addObject("post", post.get());
             modelAndView.setViewName("/post");
+
+        } else {
+            modelAndView.setViewName("/error");
         }
         return modelAndView;
     }
@@ -99,16 +101,17 @@ public class PostController {
     @RequestMapping(value = "/post/{id}", method = RequestMethod.DELETE)
     public ModelAndView deletePostWithId(@PathVariable Long id, Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
-        Post post = postService.findPostForId(id);
-        if (post == null) {
-            modelAndView.setViewName("/error");
-        }
-        // Not possible to delete if user is not logged in, or if he is now the owner of the post
-        else if (principal == null || !principal.getName().equals(post.getUser().getUsername())) {
-            modelAndView.setViewName("/403");
+        Optional<Post> post = postService.findPostForId(id);
+        if (post.isPresent()) {
+            // Not possible to delete if user is not logged in, or if he is now the owner of the post
+            if (principal == null || !principal.getName().equals(post.get().getUser().getUsername())) {
+                modelAndView.setViewName("/403");
+            } else {
+                postService.delete(post.get());
+                modelAndView.setViewName("redirect:/home");
+            }
         } else {
-            postService.delete(post);
-            modelAndView.setViewName("redirect:/home");
+            modelAndView.setViewName("/error");
         }
         return modelAndView;
     }

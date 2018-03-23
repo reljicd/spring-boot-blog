@@ -13,9 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Optional;
 
-/**
- * Created by Dusan on 19-May-17.
- */
 @Controller
 public class HomeController {
 
@@ -28,7 +25,7 @@ public class HomeController {
         this.postService = postService;
     }
 
-    @GetMapping(value={"/", "/home"})
+    @GetMapping(value = {"/", "/home"})
     public ModelAndView home(@RequestParam("page") Optional<Integer> page) {
 
         // Evaluate page. If requested parameter is null or less than 0 (to
@@ -45,5 +42,4 @@ public class HomeController {
         modelAndView.setViewName("/home");
         return modelAndView;
     }
-
 }

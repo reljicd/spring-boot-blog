@@ -9,17 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Optional;
 
-/**
- * Created by Dusan on 19-May-17.
- */
 @Controller
 public class BlogController {
 
@@ -45,18 +39,19 @@ public class BlogController {
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
         ModelAndView modelAndView = new ModelAndView();
-        User user = userService.findByUsername(username);
-        if (user == null) {
-            modelAndView.setViewName("/404");
-        } else {
-            Page<Post> posts = postService.findByUserOrderedByDatePageable(user, new PageRequest(evalPage, 5));
+        Optional<User> user = userService.findByUsername(username);
+        if (user.isPresent()) {
+            Page<Post> posts = postService.findByUserOrderedByDatePageable(user.get(), new PageRequest(evalPage, 5));
             Pager pager = new Pager(posts);
 
             modelAndView.addObject("posts", posts);
             modelAndView.addObject("pager", pager);
-            modelAndView.addObject("user", user);
+            modelAndView.addObject("user", user.get());
             modelAndView.setViewName("/posts");
+        } else {
+            modelAndView.setViewName("/error");
         }
+
         return modelAndView;
     }
 }
