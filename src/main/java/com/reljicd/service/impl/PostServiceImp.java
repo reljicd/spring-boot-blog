@@ -9,12 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
-
-/**
- * Created by Dusan on 19-May-17.
- */
 @Service
 public class PostServiceImp implements PostService {
 
@@ -26,24 +20,6 @@ public class PostServiceImp implements PostService {
     }
 
     @Override
-    public Collection<Post> findNLatestPosts(int n) {
-        return nLatestPosts(n, postRepository.findAll());
-    }
-
-    @Override
-    public Collection<Post> findNLatestPostsForUser(int n, User user) {
-        return nLatestPosts(n, user.getPosts());
-    }
-
-    private Collection<Post> nLatestPosts(int n, Collection<Post> posts) {
-        return posts
-                .stream()
-                .sorted((a, b) -> b.getCreateDate().compareTo(a.getCreateDate()))
-                .limit(n)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public Post findPostForId(Long id) {
         return postRepository.findOne(id);
     }
@@ -51,11 +27,6 @@ public class PostServiceImp implements PostService {
     @Override
     public Post savePost(Post post) {
         return postRepository.saveAndFlush(post);
-    }
-
-    @Override
-    public Page<Post> findAllPageable(Pageable pageable) {
-        return postRepository.findAll(pageable);
     }
 
     @Override

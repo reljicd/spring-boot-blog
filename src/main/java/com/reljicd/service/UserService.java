@@ -11,5 +11,4 @@ public interface UserService {
     Optional<User> findByEmail(String email);
 
     User saveUser(User user);
-
 }
