@@ -12,28 +12,45 @@ import java.util.Collection;
 @Table(name = "user")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id")
     private Long id;
+
+    @Column(name = "email", unique = true, nullable = false)
     @Email(message = "*Please provide a valid Email")
     @NotEmpty(message = "*Please provide an email")
     private String email;
+
+    @Column(name = "password", nullable = false)
     @Length(min = 5, message = "*Your password must have at least 5 characters")
     @NotEmpty(message = "*Please provide your password")
     @JsonIgnore
     private String password;
+
+    @Column(name = "username", nullable = false, unique = true)
     @Length(min = 5, message = "*Your username must have at least 5 characters")
     @NotEmpty(message = "*Please provide your name")
     private String username;
+
+    @Column(name = "name")
     @NotEmpty(message = "*Please provide your name")
     private String name;
+
+    @Column(name = "last_name")
     @NotEmpty(message = "*Please provide your last name")
     private String lastName;
+
+    @Column(name = "active", nullable = false)
     private int active;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
+
+    @OneToMany(mappedBy = "user")
     private Collection<Post> posts;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
     public Long getId() {
         return id;
     }
@@ -42,7 +59,6 @@ public class User {
         this.id = id;
     }
 
-    @Column(name = "password", nullable = false)
     public String getPassword() {
         return password;
     }
@@ -51,7 +67,6 @@ public class User {
         this.password = password;
     }
 
-    @Column(name = "username", nullable = false, unique = true)
     public String getUsername() {
         return username;
     }
@@ -60,7 +75,6 @@ public class User {
         this.username = username;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -69,7 +83,6 @@ public class User {
         this.name = name;
     }
 
-    @Column(name = "last_name")
     public String getLastName() {
         return lastName;
     }
@@ -78,7 +91,6 @@ public class User {
         this.lastName = lastName;
     }
 
-    @Column(name = "email", unique = true, nullable = false)
     public String getEmail() {
         return email;
     }
@@ -87,7 +99,6 @@ public class User {
         this.email = email;
     }
 
-    @Column(name = "active", nullable = false)
     public int getActive() {
         return active;
     }
@@ -96,8 +107,6 @@ public class User {
         this.active = active;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     public Collection<Role> getRoles() {
         return roles;
     }
@@ -106,7 +115,6 @@ public class User {
         this.roles = roles;
     }
 
-    @OneToMany(mappedBy = "user")
     public Collection<Post> getPosts() {
         return posts;
     }

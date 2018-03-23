@@ -9,26 +9,36 @@ import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Date;
 
-/**
- * Created by Dusan on 19-May-17.
- */
 @Entity
 @Table(name = "post")
 public class Post {
 
-    private Long id;
-    @Length(min = 5, message = "*Your title must have at least 5 characters")
-    @NotEmpty(message = "*Please provide title")
-    private String title;
-    private String body;
-    private Date createDate;
-    @NotNull
-    private User user;
-    private Collection<Comment> comments;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "post_id")
+    private Long id;
+
+    @Column(name = "title", nullable = false)
+    @Length(min = 5, message = "*Your title must have at least 5 characters")
+    @NotEmpty(message = "*Please provide title")
+    private String title;
+
+    @Column(name = "body", columnDefinition = "TEXT")
+    private String body;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_date", nullable = false, updatable = false)
+    @CreationTimestamp
+    private Date createDate;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    @NotNull
+    private User user;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private Collection<Comment> comments;
+
     public Long getId() {
         return id;
     }
@@ -37,7 +47,6 @@ public class Post {
         this.id = id;
     }
 
-    @Column(name = "title", nullable = false)
     public String getTitle() {
         return title;
     }
@@ -46,7 +55,6 @@ public class Post {
         this.title = title;
     }
 
-    @Column(name = "body", columnDefinition = "TEXT")
     public String getBody() {
         return body;
     }
@@ -55,9 +63,6 @@ public class Post {
         this.body = body;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "create_date", nullable = false, updatable = false)
-    @CreationTimestamp
     public Date getCreateDate() {
         return createDate;
     }
@@ -66,8 +71,6 @@ public class Post {
         this.createDate = date;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     public User getUser() {
         return user;
     }
@@ -76,7 +79,6 @@ public class Post {
         this.user = user;
     }
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     public Collection<Comment> getComments() {
         return comments;
     }
