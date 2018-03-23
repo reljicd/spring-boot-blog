@@ -3,6 +3,7 @@ package com.reljicd.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,6 +20,7 @@ import javax.sql.DataSource;
  *
  * @author Dusan
  */
+@Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AccessDeniedHandler accessDeniedHandler;
@@ -47,7 +49,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
      * HTTPSecurity configurer
      * - roles ADMIN allow to access /admin/**
      * - roles USER allow to access /user/** and /newPost/**
-     * - anybody can visit /, /home, /about, /registration, /error, /blog/**, /post/**, /h2-console/**
+     * - anybody can visit /, /home, /registration, /error, /blog/**, /post/**, /h2-console/**
      * - every other page needs authentication
      * - custom 403 access denied handler
      */
@@ -56,9 +58,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/home", "/about", "/registration", "/error", "/blog/**", "/post/**", "/h2-console/**").permitAll()
-                .antMatchers("/admin/**").hasAnyRole("ADMIN")
-                .antMatchers("/user/**", "/newPost/**").hasAnyRole("USER")
+                .antMatchers("/", "/home", "/registration", "/error", "/blog/**", "/post/**", "/h2-console/**").permitAll()
+                .antMatchers("/newPost/**", "/commentPost/**", "/createComment/**").hasAnyRole("USER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
