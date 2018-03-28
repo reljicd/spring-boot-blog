@@ -4,5 +4,5 @@ import com.reljicd.model.Comment;
 
 public interface CommentService {
 
-    Comment saveComment(Comment comment);
+    Comment save(Comment comment);
 }

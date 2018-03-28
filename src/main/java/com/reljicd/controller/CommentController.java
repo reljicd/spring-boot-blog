@@ -41,7 +41,7 @@ public class CommentController {
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("/commentForm");
         } else {
-            commentService.saveComment(comment);
+            commentService.save(comment);
             modelAndView.setViewName("redirect:/post/" + comment.getPost().getId());
         }
         return modelAndView;
@@ -53,7 +53,7 @@ public class CommentController {
     @RequestMapping(value = "/commentPost/{id}", method = RequestMethod.GET)
     public ModelAndView commentPostWithId(@PathVariable Long id, Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
-        Optional<Post> post = postService.findPostForId(id);
+        Optional<Post> post = postService.findForId(id);
         if (post.isPresent()) {
             Optional<User> user = userService.findByUsername(principal.getName());
             if (user.isPresent()) {

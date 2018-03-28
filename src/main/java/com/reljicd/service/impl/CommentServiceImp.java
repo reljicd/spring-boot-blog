@@ -17,7 +17,7 @@ public class CommentServiceImp implements CommentService {
     }
 
     @Override
-    public Comment saveComment(Comment comment) {
+    public Comment save(Comment comment) {
         return commentRepository.saveAndFlush(comment);
     }
 }

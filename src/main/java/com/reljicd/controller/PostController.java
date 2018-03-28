@@ -49,7 +49,7 @@ public class PostController {
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("/postForm");
         } else {
-            postService.savePost(post);
+            postService.save(post);
             modelAndView.setViewName("redirect:/blog/" + post.getUser().getUsername());
         }
         return modelAndView;
@@ -64,7 +64,7 @@ public class PostController {
     public ModelAndView editPostWithId(@PathVariable Long id, Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
 
-        Optional<Post> post = postService.findPostForId(id);
+        Optional<Post> post = postService.findForId(id);
         if (post.isPresent()) {
             // Not possible to edit if user is not logged in, or if he is now the owner of the post
             if (principal == null || !principal.getName().equals(post.get().getUser().getUsername())) {
@@ -83,7 +83,7 @@ public class PostController {
     public ModelAndView getPostWithId(@PathVariable Long id, Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
 
-        Optional<Post> post = postService.findPostForId(id);
+        Optional<Post> post = postService.findForId(id);
         if (post.isPresent()) {
             // Add username info to modelAndView only if the visitor of page is the owner of post
             if (principal != null && principal.getName().equals(post.get().getUser().getUsername())) {
@@ -101,7 +101,7 @@ public class PostController {
     @RequestMapping(value = "/post/{id}", method = RequestMethod.DELETE)
     public ModelAndView deletePostWithId(@PathVariable Long id, Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
-        Optional<Post> post = postService.findPostForId(id);
+        Optional<Post> post = postService.findForId(id);
         if (post.isPresent()) {
             // Not possible to delete if user is not logged in, or if he is now the owner of the post
             if (principal == null || !principal.getName().equals(post.get().getUser().getUsername())) {

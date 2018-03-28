@@ -6,7 +6,7 @@ import com.reljicd.repository.PostRepository;
 import com.reljicd.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,23 +22,23 @@ public class PostServiceImp implements PostService {
     }
 
     @Override
-    public Optional<Post> findPostForId(Long id) {
+    public Optional<Post> findForId(Long id) {
         return postRepository.findById(id);
     }
 
     @Override
-    public Post savePost(Post post) {
+    public Post save(Post post) {
         return postRepository.saveAndFlush(post);
     }
 
     @Override
-    public Page<Post> findByUserOrderedByDatePageable(User user, Pageable pageable) {
-        return postRepository.findByUserOrderByCreateDateDesc(user, pageable);
+    public Page<Post> findByUserOrderedByDatePageable(User user, int page) {
+        return postRepository.findByUserOrderByCreateDateDesc(user, new PageRequest(page, 5));
     }
 
     @Override
-    public Page<Post> findAllOrderedByDatePageable(Pageable pageable) {
-        return postRepository.findAllByOrderByCreateDateDesc(pageable);
+    public Page<Post> findAllOrderedByDatePageable(int page) {
+        return postRepository.findAllByOrderByCreateDateDesc(new PageRequest(page, 5));
     }
 
     @Override

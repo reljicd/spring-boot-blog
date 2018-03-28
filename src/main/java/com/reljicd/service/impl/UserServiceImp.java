@@ -38,7 +38,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public User saveUser(User user) {
+    public User save(User user) {
         // Encode plaintext password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(1);

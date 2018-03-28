@@ -36,12 +36,12 @@ public class BlogController {
         // Evaluate page. If requested parameter is null or less than 0 (to
         // prevent exception), return initial size. Otherwise, return value of
         // param. decreased by 1.
-        int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
+        int pageNumber = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
         ModelAndView modelAndView = new ModelAndView();
         Optional<User> user = userService.findByUsername(username);
         if (user.isPresent()) {
-            Page<Post> posts = postService.findByUserOrderedByDatePageable(user.get(), new PageRequest(evalPage, 5));
+            Page<Post> posts = postService.findByUserOrderedByDatePageable(user.get(), pageNumber);
             Pager pager = new Pager(posts);
 
             modelAndView.addObject("posts", posts);
