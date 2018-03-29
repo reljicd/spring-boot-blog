@@ -17,8 +17,6 @@ import java.util.Optional;
 @Controller
 public class BlogController {
 
-    private static final int INITIAL_PAGE = 0;
-
     private final UserService userService;
 
     private final PostService postService;
@@ -31,17 +29,12 @@ public class BlogController {
 
     @RequestMapping(value = "/blog/{username}", method = RequestMethod.GET)
     public ModelAndView blogForUsername(@PathVariable String username,
-                                        @RequestParam("page") Optional<Integer> page) {
-
-        // Evaluate page. If requested parameter is null or less than 0 (to
-        // prevent exception), return initial size. Otherwise, return value of
-        // param. decreased by 1.
-        int pageNumber = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
+                                        @RequestParam(defaultValue = "0") int page) {
 
         ModelAndView modelAndView = new ModelAndView();
         Optional<User> user = userService.findByUsername(username);
         if (user.isPresent()) {
-            Page<Post> posts = postService.findByUserOrderedByDatePageable(user.get(), pageNumber);
+            Page<Post> posts = postService.findByUserOrderedByDatePageable(user.get(), page);
             Pager pager = new Pager(posts);
 
             modelAndView.addObject("posts", posts);
