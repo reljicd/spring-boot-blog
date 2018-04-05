@@ -4,7 +4,7 @@
 <body>
 <div th:fragment="posts">
 
-    <div class="starter-template panel" th:each="post : ${posts}">
+    <div class="starter-template panel" th:each="post : ${pager.posts}">
         <div class="panel-heading">
             <h1><a th:text="${post.title}" th:href="@{'/post/' + ${post.id}}">Title</a></h1>
             <div th:text="'Created: ' + ${#dates.format(post.createDate, 'dd-MMM-yyyy')} + ' by '">

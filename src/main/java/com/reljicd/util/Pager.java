@@ -38,6 +38,10 @@ public class Pager {
         return posts.getTotalElements();
     }
 
+    public Page<Post> getPosts() {
+        return posts;
+    }
+
     public boolean indexOutOfBounds() {
         return getPageIndex() < 0 || getPageIndex() > getTotalElements();
     }
