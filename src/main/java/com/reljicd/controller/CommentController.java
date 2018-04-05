@@ -8,11 +8,11 @@ import com.reljicd.service.PostService;
 import com.reljicd.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -32,43 +32,45 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    /**
-     * Save comment with body from form
-     */
     @RequestMapping(value = "/createComment", method = RequestMethod.POST)
-    public ModelAndView createNewPost(@Valid Comment comment, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView();
+    public String createNewPost(@Valid Comment comment,
+                                BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("/commentForm");
+            return "/commentForm";
+
         } else {
             commentService.save(comment);
-            modelAndView.setViewName("redirect:/post/" + comment.getPost().getId());
+            return "redirect:/post/" + comment.getPost().getId();
         }
-        return modelAndView;
     }
 
-    /**
-     * Comment post with provided id.
-     */
     @RequestMapping(value = "/commentPost/{id}", method = RequestMethod.GET)
-    public ModelAndView commentPostWithId(@PathVariable Long id, Principal principal) {
-        ModelAndView modelAndView = new ModelAndView();
+    public String commentPostWithId(@PathVariable Long id,
+                                    Principal principal,
+                                    Model model) {
+
         Optional<Post> post = postService.findForId(id);
+
         if (post.isPresent()) {
             Optional<User> user = userService.findByUsername(principal.getName());
+
             if (user.isPresent()) {
                 Comment comment = new Comment();
                 comment.setUser(user.get());
                 comment.setPost(post.get());
-                modelAndView.addObject("comment", comment);
-                modelAndView.setViewName("/commentForm");
+
+                model.addAttribute("comment", comment);
+
+                return "/commentForm";
+
             } else {
-                modelAndView.setViewName("/error");
+                return "/error";
             }
+
         } else {
-            modelAndView.setViewName("/error");
+            return "/error";
         }
-        return modelAndView;
     }
 
 }

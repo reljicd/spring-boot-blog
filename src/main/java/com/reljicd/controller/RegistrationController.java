@@ -4,10 +4,10 @@ import com.reljicd.model.User;
 import com.reljicd.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
@@ -22,16 +22,16 @@ public class RegistrationController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
-    public ModelAndView registration() {
-        ModelAndView modelAndView = new ModelAndView();
-        User user = new User();
-        modelAndView.addObject("user", user);
-        modelAndView.setViewName("/registration");
-        return modelAndView;
+    public String registration(Model model) {
+
+        model.addAttribute("user", new User());
+        return "/registration";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
+    public String createNewUser(@Valid User user,
+                                BindingResult bindingResult,
+                                Model model) {
 
         if (userService.findByEmail(user.getEmail()).isPresent()) {
             bindingResult
@@ -44,19 +44,15 @@ public class RegistrationController {
                             "There is already a user registered with the username provided");
         }
 
-        ModelAndView modelAndView = new ModelAndView();
-
-        if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("/registration");
-        } else {
+        if (!bindingResult.hasErrors()) {
             // Registration successful, save user
             // Set user role to USER and set it as active
             userService.save(user);
 
-            modelAndView.addObject("successMessage", "User has been registered successfully");
-            modelAndView.addObject("user", new User());
-            modelAndView.setViewName("/registration");
+            model.addAttribute("successMessage", "User has been registered successfully");
+            model.addAttribute("user", new User());
         }
-        return modelAndView;
+
+        return "/registration";
     }
 }

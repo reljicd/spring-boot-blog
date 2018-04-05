@@ -6,9 +6,9 @@ import com.reljicd.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HomeController {
@@ -21,15 +21,14 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public ModelAndView home(@RequestParam(defaultValue = "0") int page) {
+    public String home(@RequestParam(defaultValue = "0") int page,
+                       Model model) {
 
         Page<Post> posts = postService.findAllOrderedByDatePageable(page);
         Pager pager = new Pager(posts);
 
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("posts", posts);
-        modelAndView.addObject("pager", pager);
-        modelAndView.setViewName("/home");
-        return modelAndView;
+        model.addAttribute("pager", pager);
+
+        return "/home";
     }
 }

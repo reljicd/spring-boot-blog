@@ -8,11 +8,11 @@ import com.reljicd.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Optional;
 
@@ -30,23 +30,24 @@ public class BlogController {
     }
 
     @RequestMapping(value = "/blog/{username}", method = RequestMethod.GET)
-    public ModelAndView blogForUsername(@PathVariable String username,
-                                        @RequestParam(defaultValue = "0") int page) {
+    public String blogForUsername(@PathVariable String username,
+                                  @RequestParam(defaultValue = "0") int page,
+                                  Model model) {
 
-        ModelAndView modelAndView = new ModelAndView();
-        Optional<User> user = userService.findByUsername(username);
-        if (user.isPresent()) {
-            Page<Post> posts = postService.findByUserOrderedByDatePageable(user.get(), page);
+        Optional<User> optionalUser = userService.findByUsername(username);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Page<Post> posts = postService.findByUserOrderedByDatePageable(user, page);
             Pager pager = new Pager(posts);
 
-            modelAndView.addObject("posts", posts);
-            modelAndView.addObject("pager", pager);
-            modelAndView.addObject("user", user.get());
-            modelAndView.setViewName("/posts");
-        } else {
-            modelAndView.setViewName("/error");
-        }
+            model.addAttribute("pager", pager);
+            model.addAttribute("user", user);
 
-        return modelAndView;
+            return "/posts";
+
+        } else {
+            return "/error";
+        }
     }
 }
